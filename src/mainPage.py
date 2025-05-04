@@ -1,10 +1,11 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
-from PyQt6.QtCore import Qt, QPointF, QSize
-from PyQt6.QtGui import QPainter, QBrush, QColor, QLinearGradient, QRadialGradient
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout
+from PyQt6.QtCore import Qt
 import sys
 
 from tools.BACKGROUND import BackgroundCanvas
 from tools.StyleSheet import STYLE_SHEET
+
+from startPage import StartWindow
 
 class Window(QWidget):
     def __init__(self):
@@ -33,7 +34,7 @@ class Window(QWidget):
 
         startButton = QPushButton("Start") 
         startButton.setObjectName("StartButton")
-        #startButton.clicked.connect(self.openModeWindow) 
+        startButton.clicked.connect(self.openStartWindow)
 
         contentButton = QPushButton("Words") 
         contentButton.setObjectName("AddButton")
@@ -45,6 +46,13 @@ class Window(QWidget):
 
         verticalLayout.addLayout(verticalLayout2)
         self.setLayout(verticalLayout)
+
+
+    def openStartWindow(self):
+        self.startWindow = StartWindow(self)
+        self.startWindow.setGeometry(self.geometry())
+        self.startWindow.show()
+        self.close()
 
 
 def main():
