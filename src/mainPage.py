@@ -37,12 +37,11 @@ class Window(QWidget):
 
         contentButton = QPushButton("Words") 
         contentButton.setObjectName("AddButton")
-        #contentButton.clicked.connect(self.openContentWindow)
 
         verticalLayout2.addWidget(startButton)
-        verticalLayout2.setSpacing(10)
+        verticalLayout2.setSpacing(15)
         verticalLayout2.addWidget(contentButton)
-        verticalLayout2.setContentsMargins(220, 0, 10, 30)
+        verticalLayout2.setContentsMargins(220, 0, 20, 30)
 
         verticalLayout.addLayout(verticalLayout2)
         self.setLayout(verticalLayout)

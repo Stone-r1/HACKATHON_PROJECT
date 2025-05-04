@@ -28,6 +28,21 @@ class BackgroundCanvas(QWidget):
         brush = QBrush(gradient)
         painter.setBrush(brush)
         painter.drawRect(0, 0, self.width(), self.height())
+
+        # background decorations
+        painter.setBrush(QColor("#3F7D58"))
+        painter.rotate(45)
+        painter.drawRect(30, 30, int(self.width() / 2), int(self.height() / 2))
+
+        painter.setBrush(QColor("#336949"))
+        painter.drawRect(90, 90, int(self.width() / 2) - 10, int(self.height() / 2) - 10)
+
+        painter.setBrush(QColor("#26593b"))
+        painter.drawRect(150, 150, int(self.width() / 2) - 20, int(self.height() / 2) - 20)
+
+        painter.setBrush(QColor("#3F7D58"))
+        painter.rotate(-33)
+        painter.drawRect(0, -self.height(), self.width(), self.height())
         painter.end()
 
 
