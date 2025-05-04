@@ -7,16 +7,20 @@ import random
 
 from tools.BACKGROUND import BackgroundCanvas
 from tools.StyleSheet import STYLE_SHEET
-from tools.gemini import WordExplorer
+from tools.generateWordsGemini import WordExplorer
+
+from resultPage import ResultWindow
 
 
 class StartWindow(QWidget):
     def __init__(self, mainWindow=None):
         super().__init__()
+        self.mainWindow = mainWindow
         self.explorer = WordExplorer(10)
         self.currentIndex = 0
         self.resultDict = []
         self.wordButtons = []
+        self.correctCount = 0
         self.correctAnswer = None  # Store the correct answer to compare 
         self.phase = "question"  # To track the phase: "question" or "open"
         self.UI()
@@ -65,6 +69,7 @@ class StartWindow(QWidget):
         response = self.explorer.queryModel(prompt)
         self.resultDict = list(self.explorer.parseResponse(response).items())
         self.currentIndex = 0
+        self.correctCount = 0
         self.generateButton.setVisible(False)
         self.showQuestion()
 
@@ -72,7 +77,7 @@ class StartWindow(QWidget):
     def showQuestion(self):
         self.clearButtons()
         if self.currentIndex >= len(self.resultDict):
-            self.promptLabel.setText("Quiz Complete!")
+            self.showResultPage()
             self.nextButton.setVisible(False)
             return
 
@@ -84,8 +89,8 @@ class StartWindow(QWidget):
         words = [synonym] + choices
         random.shuffle(words)
 
-        self.correctAnswer = synonym  # store the correct answer for comparison
-        self.phase = "question"  # set phase to question
+        self.correctAnswer = synonym
+        self.phase = "question"
 
         for i, word in enumerate(words[:2]):
             btn = QPushButton(word)
@@ -108,6 +113,7 @@ class StartWindow(QWidget):
         if self.phase == "question":
             if chosenWord == self.correctAnswer:
                 button.setStyleSheet("padding: 8px; background-color: green;")
+                self.correctCount += 1
             else:
                 button.setStyleSheet("padding: 8px; background-color: red;")
                 self.showCorrectAnswer()
@@ -143,6 +149,24 @@ class StartWindow(QWidget):
                 widget.deleteLater()
 
         self.wordButtons = []
+
+
+    def showResultPage(self):
+        self.resultWindow = ResultWindow(self.correctCount, len(self.resultDict), self.mainWindow)
+        self.hide()
+        self.resultWindow.show()
+
+
+    def reset(self):
+        self.correctCount = 0
+        self.currentIndex = 0
+        self.wordButtons = []
+        self.correctAnswer = None
+        self.phase = "question"
+        self.promptLabel.setText("")
+        self.clearButtons()
+        self.generateButton.setVisible(True)
+        self.nextButton.setVisible(False)
 
 
 if __name__ == "__main__":
