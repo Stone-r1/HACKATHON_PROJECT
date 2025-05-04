@@ -6,6 +6,7 @@ from tools.BACKGROUND import BackgroundCanvas
 from tools.StyleSheet import STYLE_SHEET
 
 from startPage import StartWindow
+from contentPage import JsonFlatWindow
 
 class Window(QWidget):
     def __init__(self):
@@ -37,7 +38,7 @@ class Window(QWidget):
         startButton.clicked.connect(self.openStartWindow)
 
         contentButton = QPushButton("Words") 
-        contentButton.setObjectName("AddButton")
+        contentButton.clicked.connect(self.openContentWindow)
 
         verticalLayout2.addWidget(startButton)
         verticalLayout2.setSpacing(15)
@@ -52,6 +53,13 @@ class Window(QWidget):
         self.startWindow = StartWindow(self)
         self.startWindow.setGeometry(self.geometry())
         self.startWindow.show()
+        self.close()
+
+    
+    def openContentWindow(self):
+        self.contentWindow = JsonFlatWindow(self)
+        self.contentWindow.setGeometry(self.geometry())
+        self.contentWindow.show()
         self.close()
 
 
